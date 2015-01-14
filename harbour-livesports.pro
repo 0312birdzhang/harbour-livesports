@@ -18,13 +18,16 @@ SOURCES += src/harbour-livesports.cpp
 
 OTHER_FILES += qml/harbour-livesports.qml \
     qml/cover/CoverPage.qml \
-    qml/pages/FirstPage.qml \
-    qml/pages/SecondPage.qml \
     rpm/harbour-livesports.changes.in \
     rpm/harbour-livesports.spec \
     rpm/harbour-livesports.yaml \
     translations/*.ts \
-    harbour-livesports.desktop
+    harbour-livesports.desktop \
+    qml/pages/Leagues.qml \
+    qml/pages/Games.qml \
+    qml/pages/Live.qml \
+    qml/pages/GameDelegate.qml \
+    qml/py/lscore.py
 
 # to disable building translations every time, comment out the
 # following CONFIG line
