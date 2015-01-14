@@ -30,33 +30,52 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-
+import QtQuick.XmlListModel 2.0
+// this page is very similar to Games.qml and Live.qml, so one has to figure out the documentation for herself/himself
 
 Page {
     id: page
     SilicaListView {
         id: listView
-        model: 20
+        model: leaguesModel
         anchors.fill: parent
         header: PageHeader {
-            title: qsTr("Nested Page")
+            title: qsTr("Leagues")
+        }
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Refresh")
+                onClicked: refresh()
+            }
         }
         delegate: BackgroundItem {
             id: delegate
 
             Label {
                 x: Theme.paddingLarge
-                text: qsTr("Item") + " " + index
+                text: name
                 anchors.verticalCenter: parent.verticalCenter
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
             }
-            onClicked: console.log("Clicked " + index)
+            onClicked: pageStack.push(Qt.resolvedUrl("Games.qml"), { league: Id }) // this pushes another page, a Games.qml page, with an arguments 'Id' of the league, so it can open the right league
         }
         VerticalScrollDecorator {}
+        section {
+                property: "country"
+                criteria: ViewSection.FullString
+                delegate: SectionHeader { text: section }
+            }
+    }
+
+    XmlListModel {
+        property string searchString: '' // this is not used yet, but can be used for filtering data
+        id: leaguesModel
+        xml: gamesXml
+        query: "/leagues/league[contains(lower-case(child::name),lower-case('"+searchString+"'))]"
+
+        XmlRole { name: "name"; query: "name/string()" }
+        XmlRole { name: "country"; query: "country/string()" }
+        XmlRole { name: "date"; query: "date/string()" }
+        XmlRole { name: "Id"; query: "id/string()" }
     }
 }
-
-
-
-
-
